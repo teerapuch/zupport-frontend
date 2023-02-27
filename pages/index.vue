@@ -22,31 +22,35 @@
   <Maps />
   <Getintouch />
   <br />
-  <!-- Components -->
-  <AppAlert>
-    This is an auto-imported App Alert component.
-  </AppAlert>
-  <br />
-  <Counter />
-  <br />
-  <h1>{{ organization.login }}</h1>
-  <p>{{ organization.description }}</p>
+  <div>
+    <div>
+      <h1>API Restaurants</h1>
+      <!-- 
+      <p v-if="$fetchState.pending">Fetching posts...</p>
+      <p v-else-if="$fetchState.error">Error while fetching posts: {{ $fetchState.error.message }}</p>
+      <ul v-else> 
+        <ul>
+          <li v-for="restaurant of restaurants">{{ restaurant.title }}</li>
+        </ul>
+        <button @click="$fetch">Refresh</button>
+      -->
+    </div>
+  </div>
 </template>
 
 <script>
-
-export default defineComponent({
-  async setup() {
-    const [{ data: organization }, { data: repos }] = await Promise.all([
-      useFetch(`https://api.github.com/orgs/nuxt`),
-      useFetch(`https://api.github.com/orgs/nuxt/repos`)
-    ])
-    return {
-      organization,
-      repos
+export default {
+    data() {
+      return {
+        restaurants: []
+      }
+    },
+    async fetch() {
+      this.restaurants = await fetch(
+        'http://127.0.0.1:8000/api/restaurant'
+      ).then(res => res.json())
     }
   }
-})
 </script>
 
 <style scoped>
